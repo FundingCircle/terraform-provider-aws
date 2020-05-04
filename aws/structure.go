@@ -5724,30 +5724,3 @@ func flattenLakeFormationPrincipalPermissions(pPermissions *lakeformation.Princi
 	}
 	return ppList
 }
-
-func flattenLakeFormationDataLakeSettings(d *schema.ResourceData, settings *lakeformation.DataLakeSettings) error {
-	cddpList := flattenLakeFormationPrincipalPermissions(settings.CreateDatabaseDefaultPermissions)
-	ctdpList := flattenLakeFormationPrincipalPermissions(settings.CreateTableDefaultPermissions)
-
-	err = d.Set("create_database_default_permissions", cddpList)
-	if err != nil {
-		return err
-	}
-
-	err = d.Set("create_table_default_permissions", ctdpList)
-	if err != nil {
-		return err
-	}
-
-	admins := make([string], 0, len(settings.DataLakeAdmins))
-	for _, admObj := range settings.DataLakeAdmins {
-		admins = append(admins, admObj.DataLakePrincipalIdentifier)
-	}
-
-	err = d.Set("data_lake_admins", admins)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}

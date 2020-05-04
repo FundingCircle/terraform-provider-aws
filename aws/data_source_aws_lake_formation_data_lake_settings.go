@@ -71,7 +71,25 @@ func dataSourceAwsLakeFormationDataLakeSettingsRead(d *schema.ResourceData, meta
 		return fmt.Errorf("error getting data lake settings: %s", err)
 	}
 
-	flattenLakeFormationDataLakeSettings(d, resp.DataLakeSettings)
+	cddpList := flattenLakeFormationPrincipalPermissions(res.DataLakeSettings.CreateDatabaseDefaultPermissions)
+	ctdpList := flattenLakeFormationPrincipalPermissions(res.DataLakeSettings.CreateTableDefaultPermissions)
+
+	if err := d.Set("create_database_default_permissions", cddpList); err != nil {
+		return fmt.Errorf("error setting create_database_default_permissions: %s", err)
+	}
+
+	if err := d.Set("create_table_default_permissions", ctdpList); err != nil {
+		return fmt.Errorf("error setting create_table_default_permissions: %s", err)
+	}
+
+	admins := make([string], 0, len(settings.DataLakeAdmins))
+	for _, admObj := range settings.DataLakeAdmins {
+		admins = append(admins, admObj.DataLakePrincipalIdentifier)
+	}
+
+	if err := d.Set("data_lake_admins", admins); err != nil {
+		return fmt.Errorf("error setting data_lake_admins: %s", err)
+	}
 
 	return nil
 }
