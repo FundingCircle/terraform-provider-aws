@@ -35,6 +35,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/elb"
 	"github.com/aws/aws-sdk-go/service/iot"
 	"github.com/aws/aws-sdk-go/service/kinesis"
+	"github.com/aws/aws-sdk-go/service/lakeformation"
 	"github.com/aws/aws-sdk-go/service/lambda"
 	"github.com/aws/aws-sdk-go/service/macie"
 	"github.com/aws/aws-sdk-go/service/mq"
@@ -5710,4 +5711,43 @@ func isIpv6CidrsEquals(first, second string) bool {
 	_, secondMask, _ := net.ParseCIDR(second)
 
 	return firstMask.String() == secondMask.String()
+}
+
+func flattenLakeFormationPrincipalPermissions(pPermissions *lakeformation.PrincipalPermissions) []map[string]interface{} {
+	ppList := make([]map[string]interface{}, 0, len(pPermissions))
+	for _, ppObj := range pPermissions {
+		pp := map[string]interface{}{
+			"permissions": *ppObj.Permissions,
+			"principal": 	 *ppObj.Principal.DataLakePrincipalIdentifier
+		}
+		ppList = append(ppList, pp)
+	}
+	return ppList
+}
+
+func flattenLakeFormationDataLakeSettings(d *schema.ResourceData, settings *lakeformation.DataLakeSettings) error {
+	cddpList := flattenLakeFormationPrincipalPermissions(settings.CreateDatabaseDefaultPermissions)
+	ctdpList := flattenLakeFormationPrincipalPermissions(settings.CreateTableDefaultPermissions)
+
+	err = d.Set("create_database_default_permissions", cddpList)
+	if err != nil {
+		return err
+	}
+
+	err = d.Set("create_table_default_permissions", ctdpList)
+	if err != nil {
+		return err
+	}
+
+	admins := make([string], 0, len(settings.DataLakeAdmins))
+	for _, admObj := range settings.DataLakeAdmins {
+		admins = append(admins, admObj.DataLakePrincipalIdentifier)
+	}
+
+	err = d.Set("data_lake_admins", admins)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
