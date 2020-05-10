@@ -651,6 +651,7 @@ func Provider() terraform.ResourceProvider {
 			"aws_kms_key":                                             resourceAwsKmsKey(),
 			"aws_kms_ciphertext":                                      resourceAwsKmsCiphertext(),
 			"aws_lakeformation_datalake_settings":                     resourceAwsLakeFormationDataLakeSettings(),
+			"aws_lakeformation_resource":                              resourceAwsLakeFormationResource(),
 			"aws_lambda_alias":                                        resourceAwsLambdaAlias(),
 			"aws_lambda_event_source_mapping":                         resourceAwsLambdaEventSourceMapping(),
 			"aws_lambda_function_event_invoke_config":                 resourceAwsLambdaFunctionEventInvokeConfig(),
