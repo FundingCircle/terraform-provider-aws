@@ -63,6 +63,7 @@ Kinesis
 Kinesis Data Analytics v2 (SQL and Java Applications)
 Kinesis Firehose
 Kinesis Video
+LakeFormation
 Lambda
 License Manager
 Lightsail
