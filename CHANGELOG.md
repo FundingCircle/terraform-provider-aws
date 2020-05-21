@@ -11,10 +11,17 @@ FEATURES:
 
 ENHANCEMENTS:
 
+* data-source/aws_efs_file_system: Add `size_in_bytes` attribute [GH-13125]
 * data-source/aws_eip: Add `customer_owned_ip` and `customer_owned_ipv4_pool` attributes [GH-12862]
-* resource/aws_api_gateway_deployment: Add triggers argument [GH-13054]
+* resource/aws_api_gateway_deployment: Add `triggers` argument [GH-13054]
 * resource/aws_apigatewayv2_deployment: Add `triggers` argument [GH-13055]
 * resource/aws_eip: Add `customer_owned_ip` attribute and `customer_owned_ipv4_pool` argument [GH-12862]
+* resource/aws_glue_connection: Support `KAFKA` for `connection_type` argument [GH-13141]
+* resource/aws_workspaces_directory: Add output attributes for `workspace_security_group_id`, `iam_role_id`, `registration_code`, `directory_name`, `directory_type`, `customer_user_name`, `alias`, `ip_group_ids` and `dns_ip_addresses` [GH-13089]
+
+BUG FIXES:
+
+* resource/aws_workspaces_directory: Fixes error when removing tags [GH-13089]
 
 ## 2.60.0 (May 01, 2020)
 
