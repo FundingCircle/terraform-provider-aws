@@ -5713,14 +5713,28 @@ func isIpv6CidrsEquals(first, second string) bool {
 	return firstMask.String() == secondMask.String()
 }
 
-func flattenLakeFormationPrincipalPermissions(pPermissions *lakeformation.PrincipalPermissions) []map[string]interface{} {
+func flattenLakeFormationPrincipalPermissions(pPermissions []*lakeformation.PrincipalPermissions) []map[string]interface{} {
 	ppList := make([]map[string]interface{}, 0, len(pPermissions))
 	for _, ppObj := range pPermissions {
 		pp := map[string]interface{}{
-			"permissions": *ppObj.Permissions,
-			"principal": 	 *ppObj.Principal.DataLakePrincipalIdentifier
+			"permissions": ppObj.Permissions,
+			"principal":   ppObj.Principal.DataLakePrincipalIdentifier,
 		}
 		ppList = append(ppList, pp)
+	}
+	return ppList
+}
+
+func flattenLakeFormationPrincipalResourcePermissions(prPermissions []*lakeformation.PrincipalResourcePermissions) []map[string]interface{} {
+	ppList := make([]map[string]interface{}, 0, len(prPermissions))
+	for _, prpObj := range prPermissions {
+		prp := map[string]interface{}{
+			"permissions":                   prpObj.Permissions,
+			"permissions_with_grant_option": prpObj.PermissionsWithGrantOption,
+			"principal":                     prpObj.Principal.DataLakePrincipalIdentifier,
+			"resource":                      prpObj.Resource,
+		}
+		ppList = append(ppList, prp)
 	}
 	return ppList
 }

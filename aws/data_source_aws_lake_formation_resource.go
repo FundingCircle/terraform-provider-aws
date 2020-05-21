@@ -3,8 +3,8 @@ package aws
 import (
 	"fmt"
 	"log"
+	"time"
 
-	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/lakeformation"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
@@ -36,7 +36,7 @@ func dataSourceAwsLakeFormationResourceRead(d *schema.ResourceData, meta interfa
 
 	arn := d.Get("arn").(string)
 	req := &lakeformation.DescribeResourceInput{
-		ResourceArn: arn
+		ResourceArn: &arn,
 	}
 	log.Printf("[DEBUG] Reading Lake Formation Resource: %s", req)
 	res, err := client.DescribeResource(req)
@@ -44,7 +44,6 @@ func dataSourceAwsLakeFormationResourceRead(d *schema.ResourceData, meta interfa
 		return fmt.Errorf("error getting resource: %s", err)
 	}
 
-	d.Set("arn", res.ResourceInfo.Arn)
 	d.Set("last_modified", res.ResourceInfo.LastModified.Format(time.RFC1123))
 	d.Set("role_arn", res.ResourceInfo.RoleArn)
 

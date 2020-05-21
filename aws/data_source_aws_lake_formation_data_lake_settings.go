@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/lakeformation"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
@@ -22,7 +21,7 @@ func dataSourceAwsLakeFormationDataLakeSettings() *schema.Resource {
 						"permissions": {
 							Type:     schema.TypeList,
 							Computed: true,
-							Elem: &schema.Schema{Type: schema.TypeString},
+							Elem:     &schema.Schema{Type: schema.TypeString},
 						},
 						"principal": {
 							Type:     schema.TypeString,
@@ -39,7 +38,7 @@ func dataSourceAwsLakeFormationDataLakeSettings() *schema.Resource {
 						"permissions": {
 							Type:     schema.TypeList,
 							Computed: true,
-							Elem: &schema.Schema{Type: schema.TypeString},
+							Elem:     &schema.Schema{Type: schema.TypeString},
 						},
 						"principal": {
 							Type:     schema.TypeString,
@@ -51,7 +50,7 @@ func dataSourceAwsLakeFormationDataLakeSettings() *schema.Resource {
 			"data_lake_admins": {
 				Type:     schema.TypeList,
 				Computed: true,
-				Elem: &schema.Schema{Type: schema.TypeString},
+				Elem:     &schema.Schema{Type: schema.TypeString},
 			},
 		},
 	}
@@ -61,10 +60,10 @@ func dataSourceAwsLakeFormationDataLakeSettingsRead(d *schema.ResourceData, meta
 	client := meta.(*AWSClient).lakeformationconn
 
 	log.Printf("[DEBUG] Reading Lake Formation Data Lake Settings")
-	
+
 	accountId := meta.(*AWSClient).accountid
 	req := &lakeformation.GetDataLakeSettingsInput{
-		CatalogId: accountId
+		CatalogId: &accountId,
 	}
 	res, err := client.GetDataLakeSettings(req)
 	if err != nil {
@@ -82,9 +81,9 @@ func dataSourceAwsLakeFormationDataLakeSettingsRead(d *schema.ResourceData, meta
 		return fmt.Errorf("error setting create_table_default_permissions: %s", err)
 	}
 
-	admins := make([string], 0, len(settings.DataLakeAdmins))
-	for _, admObj := range settings.DataLakeAdmins {
-		admins = append(admins, admObj.DataLakePrincipalIdentifier)
+	admins := make([]string, 0, len(res.DataLakeSettings.DataLakeAdmins))
+	for _, admObj := range res.DataLakeSettings.DataLakeAdmins {
+		admins = append(admins, *admObj.DataLakePrincipalIdentifier)
 	}
 
 	if err := d.Set("data_lake_admins", admins); err != nil {

@@ -267,7 +267,7 @@ func Provider() terraform.ResourceProvider {
 			"aws_kms_secret":                                dataSourceAwsKmsSecret(),
 			"aws_kms_secrets":                               dataSourceAwsKmsSecrets(),
 			"aws_lake_formation_data_lake_settings":         dataSourceAwsLakeFormationDataLakeSettings(),
-			"aws_lake_formation_resource":         					 dataSourceAwsLakeFormationResource(),
+			"aws_lake_formation_resource":                   dataSourceAwsLakeFormationResource(),
 			"aws_lambda_alias":                              dataSourceAwsLambdaAlias(),
 			"aws_lambda_function":                           dataSourceAwsLambdaFunction(),
 			"aws_lambda_invocation":                         dataSourceAwsLambdaInvocation(),
