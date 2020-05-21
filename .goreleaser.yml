@@ -1,0 +1,13 @@
+before:
+  hooks:
+    - go mod download
+builds:
+- binary: terraform-provider-aws_v{{.Version}}
+  env:
+    - CGO_ENABLED=0
+  goos:
+    - darwin
+    - linux
+    - windows
+  goarch:
+    - amd64

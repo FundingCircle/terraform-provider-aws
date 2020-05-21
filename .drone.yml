@@ -1,0 +1,13 @@
+pipeline:
+  clone:
+    image: plugins/git
+    tags: true
+
+  release:
+    image: golang:1.12
+    secrets: [github_token]
+    commands:
+      curl -sL https://git.io/goreleaser | bash
+    when:
+      event: tag
+  
