@@ -16,7 +16,6 @@ func dataSourceAwsLakeFormationResource() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"arn": {
 				Type:     schema.TypeString,
-				Computed: true,
 				Required: true,
 			},
 			"last_modified": {

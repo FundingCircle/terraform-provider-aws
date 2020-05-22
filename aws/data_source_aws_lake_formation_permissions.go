@@ -15,7 +15,6 @@ func dataSourceAwsLakeFormationPermissions() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"resource_arn": {
 				Type:     schema.TypeString,
-				Computed: true,
 				Required: true,
 			},
 			"principal_resource_permissions": {
