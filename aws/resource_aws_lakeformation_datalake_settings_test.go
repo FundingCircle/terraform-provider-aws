@@ -25,7 +25,6 @@ func TestAccAWSLakeFormationDataLakeSettings_basic(t *testing.T) {
 				Config: testAccAWSLakeFormationDataLakeSettingsConfig_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckResourceAttrAccountID(resourceName, "catalog_id"),
-					resource.TestCheckResourceAttrPair(callerIdentityName, "account_id", resourceName, "catalog_id"),
 					resource.TestCheckResourceAttr(resourceName, "admins.#", "1"),
 					testAccCheckAWSLakeFormationDataLakePrincipal(callerIdentityName, "arn", resourceName, "admins"),
 				),
@@ -55,7 +54,6 @@ func TestAccAWSLakeFormationDataLakeSettings_withCatalogId(t *testing.T) {
 				Config: testAccAWSLakeFormationDataLakeSettingsConfig_withCatalogId,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckResourceAttrAccountID(resourceName, "catalog_id"),
-					resource.TestCheckResourceAttrPair(callerIdentityName, "account_id", resourceName, "catalog_id"),
 					resource.TestCheckResourceAttr(resourceName, "admins.#", "1"),
 					testAccCheckAWSLakeFormationDataLakePrincipal(callerIdentityName, "arn", resourceName, "admins"),
 				),
